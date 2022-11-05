@@ -13,7 +13,7 @@ const options = {
     sqliteDB:{
         client:"sqlite3",
         connection:{
-            filename: path.join(__dirname, "../DB/chatDB.sqlite")
+            filename: path.join(__dirname, "../DB/ecommerce.sqlite")
         }
     }
 }
