@@ -1,0 +1,116 @@
+[
+  {
+    "id": 1,
+    "timestamp": "4/11/2022",
+    "productos": [
+      {
+        "id": 1,
+        "timestamp": "4/11/2022",
+        "nombre": "cajas de carton pesado",
+        "descripcion": "Cajas de carton con plomo",
+        "codigo": 100002,
+        "url": "/foto2",
+        "precio": 605,
+        "stock": 50
+      },
+      {
+        "id": 5,
+        "timestamp": "4/11/2022",
+        "nombre": "cajas de carton pesado con plomo",
+        "descripcion": "Cajas de carton con vanadio",
+        "codigo": 100003,
+        "url": "/foto2",
+        "precio": 605,
+        "stock": 50
+      },
+      {
+        "id": 5,
+        "timestamp": "4/11/2022",
+        "nombre": "cajas de carton pesado con plomo",
+        "descripcion": "Cajas de carton con vanadio",
+        "codigo": 100003,
+        "url": "/foto2",
+        "precio": 605,
+        "stock": 50
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "timestamp": "4/11/2022",
+    "productos": [
+      {
+        "id": 1,
+        "timestamp": "4/11/2022",
+        "nombre": "cajas de carton pesado",
+        "descripcion": "Cajas de carton con plomo",
+        "codigo": 100002,
+        "url": "/foto2",
+        "precio": 605,
+        "stock": 50
+      },
+      {
+        "id": 2,
+        "timestamp": "4/11/2022",
+        "nombre": "cajas de carton pesado con plomo",
+        "descripcion": "Cajas de carton con vanadio",
+        "codigo": 100003,
+        "url": "/foto2",
+        "precio": 605,
+        "stock": 50
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "timestamp": "4/11/2022",
+    "productos": [
+      {
+        "id": 1,
+        "timestamp": "4/11/2022",
+        "nombre": "cajas de carton pesado",
+        "descripcion": "Cajas de carton con plomo",
+        "codigo": 100002,
+        "url": "/foto2",
+        "precio": 605,
+        "stock": 50
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "timestamp": "4/11/2022",
+    "productos": [
+      {
+        "id": 1,
+        "timestamp": "4/11/2022",
+        "nombre": "cajas de carton pesado",
+        "descripcion": "Cajas de carton con plomo",
+        "codigo": 100002,
+        "url": "/foto2",
+        "precio": 605,
+        "stock": 50
+      },
+      {
+        "id": 2,
+        "timestamp": "4/11/2022",
+        "nombre": "cajas de carton pesado con plomo",
+        "descripcion": "Cajas de carton con vanadio",
+        "codigo": 100003,
+        "url": "/foto2",
+        "precio": 605,
+        "stock": 50
+      },
+      {
+        "id": 3,
+        "timestamp": "4/11/2022",
+        "nombre": "cajas de carton pesado con plomo",
+        "descripcion": "Cajas de carton con vanadio",
+        "codigo": 100003,
+        "url": "/foto2",
+        "precio": 605,
+        "stock": 50
+      }
+    ]
+  }
+]
