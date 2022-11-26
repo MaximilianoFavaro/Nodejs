@@ -1,9 +1,10 @@
-import {carrito} from '../../managers/fileObjects.js'
+import { ContenedorDaoCarritos } from '../../daos/daoindex.js';
 const admin = true;
+ 
 
 const  getAllCarrito= async (req,res) => {
     try{
-        const allObjects = await carrito.getAll()
+        const allObjects = await ContenedorDaoCarritos.getAll()
         res.send(allObjects)
     }catch(error){
         console.log(error)
@@ -17,7 +18,7 @@ const  getAllCarrito= async (req,res) => {
 const  getCarritoById= async(req,res)=>{
     try{
         const {id} = req.params
-        const objectById = await carrito.getById(id)
+        const objectById = await ContenedorDaoCarritos.getById(id)
         res.send(objectById)
     }catch(error){
         console.log(error);
@@ -35,7 +36,7 @@ const addCarrito=( async(req,res) =>{
             console.log('Entrando a addCarrito')
             let newCarrito = req.body;  
             console.log(newCarrito)              
-            const carritoNew = await carrito.save(newCarrito);
+            const carritoNew = await ContenedorDaoCarritos.save(newCarrito);
             res.send(carritoNew)
 
         }catch(error){
@@ -54,7 +55,7 @@ const putCarrito = async(req,res) =>{
         try{
             const {id}= req.params
             const newProd = req.body
-            const produtosUpdated = await carrito.updateById(parseInt(id),newProd)
+            const produtosUpdated = await ContenedorDaoCarritos.updateById(parseInt(id),newProd)
             res.send ( {
                 message: 'Carrito actualizado',
                 carrito: newProd
@@ -74,8 +75,8 @@ const  deleteCarritoById = async(req,res)=>{
     if(admin){
         try{
             const {id}= req.params;
-            const product = await carrito.deleteById(parseInt(id))
-            const getAllCarrito= await carrito.getAll()
+            const product = await ContenedorDaoCarritos.deleteById(parseInt(id))
+            const getAllCarrito= await ContenedorDaoCarritos.getAll()
             res.send(getAllCarrito)
 
         }catch(error){
@@ -88,10 +89,11 @@ const  deleteCarritoById = async(req,res)=>{
 const getNestedCarrito = async(req,res)=>{
     try{
         const {id} = req.params
-        const allObjects = await carrito.getById(parseInt(id))
+        const allObjects = await ContenedorDaoCarritos.getById(parseInt(id))
+        console.log('Al ejecutar getNestedCarrito')
         console.log(allObjects)        
 
-        res.send(allObjects.productos)
+        res.send(allObjects[0].productos)
     }
     catch(error){
         console.log(error)
@@ -103,8 +105,10 @@ const getNestedCarrito = async(req,res)=>{
 const addNestedCarrito = async(req,res) => {
     try{
         const {id} = req.params
-        const allObjects= await carrito.getById(parseInt(id))
-        const productos = allObjects.productos
+        const allObjects= await ContenedorDaoCarritos.getById(parseInt(id))
+        console.log('Al mostrar ALLOBJC')
+        console.log(allObjects)
+        const productos = allObjects[0].productos
         console.log('Al obtener todos los productos desde getById '+JSON.stringify(allObjects.productos))
         const prodLen = productos.length
         console.log('Long productos: '+prodLen)
@@ -112,8 +116,8 @@ const addNestedCarrito = async(req,res) => {
         productos[prodLen]=req.body
         
         allObjects.productos = productos        
-        await carrito.updateById(id,allObjects)
-        const updatedObject = await carrito.getById(parseInt(id))
+        await ContenedorDaoCarritos.updateById(id,allObjects)
+        const updatedObject = await ContenedorDaoCarritos.getById(parseInt(id))
         res.send(updatedObject)
 
     }catch{
@@ -126,11 +130,16 @@ const deleteNestedCarrito= async(req,res)=>{
         const{id} = req.params
         const{id_prod}=req.params
 
-        const allObjects=await carrito.getById(parseInt(id))
-        const productos=allObjects.productos
+        const allObjects=await ContenedorDaoCarritos.getById(parseInt(id))
+        console.log('Al mostrar ALLOBJECTS '+allObjects)
+        const productos=allObjects[0].productos
+        console.log('Productos: '+productos)
         const newNestedObject = productos.filter(item => item.id !==parseInt(id_prod))
-        allObjects.productos = newNestedObject
-        const resp=await carrito.updateById(id,allObjects)
+        console.log('new nested: '+newNestedObject)
+        allObjects[0].productos = newNestedObject
+        let newUpdate = {timestamp:allObjects[0].timestamp,productos:allObjects[0].productos}
+        console.log('all objects final: '+newUpdate)
+        const resp=await ContenedorDaoCarritos.updateById(id,newUpdate)
 
         res.send(resp)
 

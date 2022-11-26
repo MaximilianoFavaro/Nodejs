@@ -1,10 +1,12 @@
 
-import { productos } from '../../managers/fileObjects.js';
+
+import { ContenedorDaoProductos } from '../../daos/daoindex.js';
 const admin = true;
+
 
 const getAllProductos= (async (req,res) => {
         try{
-            const allObjects = await productos.getAll()
+            const allObjects = await ContenedorDaoProductos.getAll()
             if (allObjects !== -1){
             res.send(JSON.stringify(allObjects))
             }else {
@@ -22,7 +24,7 @@ const getAllProductos= (async (req,res) => {
 const getProductosById= (async(req,res)=>{
         try{
             const {id} = req.params            
-            const objectById = await productos.getById(parseInt(id))            
+            const objectById = await ContenedorDaoProductos.getById(parseInt(id))            
             res.send(objectById)
         }catch(error){
             console.log(error);
@@ -38,7 +40,7 @@ const getProductosById= (async(req,res)=>{
             try{
                 
                 let newProduct = req.body;                
-                const productosNew = await productos.save(newProduct);
+                const productosNew = await ContenedorDaoProductos.save(newProduct);
                 res.send(productosNew)
     
             }catch(error){
@@ -57,7 +59,7 @@ const putProductos = (async(req,res) =>{
             try{
                 const {id}= req.params
                 const newProd = req.body
-                const produtosUpdated = await productos.updateById(parseInt(id),newProd)
+                const produtosUpdated = await ContenedorDaoProductos.updateById(parseInt(id),newProd)
                 res.send ( {
                     message: 'Producto actualizado',
                     producto: newProd
@@ -77,7 +79,7 @@ const putProductos = (async(req,res) =>{
         if(admin){
             try{
                 const {id}= req.params;
-                const product = await productos.deleteById(parseInt(id))
+                const product = await ContenedorDaoProductos.deleteById(parseInt(id))
                 res.send({ message:'Producto eliminado', code:0})
     
             }catch(error){
