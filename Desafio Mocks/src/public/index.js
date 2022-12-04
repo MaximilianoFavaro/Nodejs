@@ -74,7 +74,7 @@ socketClient.on("messages",async (dataMsg)=>{
     console.log("dataMsg", dataMsg);
     //de-normalizar
     const normalData = normalizr.denormalize(dataMsg.result,chatSchema,dataMsg.entities);
-    // console.log("normalData",normalData)
+     console.log("normalData",normalData)
     let messageElements = "";
     normalData.messages.forEach(msg=>{
         messageElements += `<div><strong>${msg.author.name} - ${msg.timestamp}:</strong> ${msg.text}</div>`;
