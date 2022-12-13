@@ -1,5 +1,10 @@
 <div class="mx-5 my-2">
-    <h1>home</h1>
+    
+   {{#if logout}}
+    <h1>Hasta Luego {{users}} ! </h1>
+{{else}}    
+    <h1>Bienvenido {{users}} ! </h1>
+{{/if}}
     <p id="userEmail"></p>
    
     {{> productsForm}}
@@ -8,6 +13,10 @@
     <input class="form-control my-2" type="text" id="chatMsg" placeholder="Ingresa un mensaje"/>
     <button class="btn btn-primary mb-2" id="sendMsg">Enviar</button>
     <div id="chatContainer" class="my-2"></div>
+</div>
+<div class="mx-5 my-2">
+     <a href="/inicio-sesion">Inicia sesión</a>
+     <a href="/logout">Cerrar sesión</a>
 </div>
 {{> importScripts}}
 <script src="index.js"></script>

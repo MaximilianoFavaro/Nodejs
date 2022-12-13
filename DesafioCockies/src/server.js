@@ -39,7 +39,7 @@ app.use(session({
     secret:"claveSecreta",
     resave:false,
     saveUninitialized:false,
-    cookie:{maxAge:20000}
+    cookie:{maxAge:600000}
 }))
 
 
@@ -69,71 +69,95 @@ const normalizarMensajes = async()=>{
     // console.log(JSON.stringify(messagesNormalized, null,"\t"));
     return messagesNormalized;
 }
-
-
-
 // routes
 //view routes
 app.get('/', async(req,res)=>{
     res.render('home')
 })
-app.get('/login', async(req,res)=>{
-    return res.render('login')
-    /*const {nombre} = req.query;
-    const {password}=req.query;
-    console.log('Nombre;: '+nombre)
-    if (req.session.username){
-        return res.redirect('/perfil')
-    }
-    else {
-        if(nombre){
-            req.session.username = nombre;
-            res.render ('/perfil',{mensaje:"Bienvenido usuario"})            
-        }else  {
-            res.send("Por favor ingresa el usuario")
-        }
-    }*/
 
-})
+app.use(session({
+    secret:"claveSecreta", //clave de encriptación de la sesión
 
-app.post('/login', async(req,res)=>{
-    console.log('Entrando login: '+req.body.nombre)
-    const {nombre} = req.body;
-    const {password}=req.body;
-    if (req.session.username){
-        return res.redirect('perfil')
-    }
-    else {
-        if(nombre){
-            req.session.username = nombre;
-            res.render ('perfil',{mensaje:`Bienvenido usuario: ${nombre} `})            
-        }else  {
-            res.send("Por favor ingresa el usuario")
-        }
-    }
-})
-const checkUserLogged = (req,res,next)=>{
-    if(req.session.username){
-        next();
+    //config para guardar en la memoria del servidor
+    resave:true,
+    saveUninitialized:true,
+}));
+
+//middleware para validar la sesión del usuario
+const checkSession = (req,res,next)=>{
+    //validamos si la sesión esta activa
+    if(req.session.user){
+       const result = (req.session.user === undefined)  ? res.render("home",{users : ""}) : res.render("home",{users : req.session.user.name })
     } else{
-        res.redirect("login");
+        next();
     }
 }
 
-app.get("/perfil",checkUserLogged,(req,res)=>{
-    console.log(req.session);
-    res.send(`Bienvenido ${req.session.username}`);
+//rutas asociadas a las páginas del sitio web
+app.get("/",(req,res)=>{
+    const result = (req.session.user === undefined)  ? res.render("home",{users : ""}) : res.render("home",{users : req.session.user.name })
 });
 
-app.get("/home",checkUserLogged,(req,res)=>{
-    console.log(req.session);
-    res.send("home");
+app.get("/registro",checkSession,(req,res)=>{
+    res.render("signup")
 });
 
-app.get('/logout', (req,res)=>{
+app.get("/inicio-sesion",checkSession,(req,res)=>{
+    res.render("login")
+});
+
+app.get("/perfil",(req,res)=>{
+    if(req.session.user){
+        res.render("profile");
+    } else{
+        res.send("<div>Debes <a href'/inicio-sesion'>inciar sesion</a> o <a href='/registro'>registrarte</a></div>")
+    }
+});
+
+let users = [];
+
+//rutas de autenticacion
+app.post("/signup",(req,res)=>{
+    const newUser = req.body;
+    //el usuario existe?
+    const userExists = users.find(elm=>elm.email === newUser.email);
+    if(userExists){
+        res.render("signup",{error:"usuario ya registrado"});
+    } else{
+        users.push(newUser);
+        req.session.user = newUser;
+        const result = (req.session.user === undefined)  ? res.render("home",{users : ""}) : res.render("home",{users : req.session.user.name })
+    }
+});
+
+app.post("/login",(req,res)=>{
+    const user = req.body;
+    //el usuario existe
+    const userExists = users.find(elm=>elm.email === user.email);
+    if(userExists){
+        //validar la contraseña
+        if(userExists.password === user.password){
+            req.session.user = user;
+            console.log(userExists.name)
+            const result = (userExists.name === undefined)  ? res.render("home",{users : ""}) : res.render("home",{users : userExists.name })
+           // const result = (req.session.user === undefined)  ? res.render("home",{users : ""}) : res.render("home",{users : req.session.user.name })
+        } else{
+            res.redirect("/inicio-sesion")
+        }
+    } else{
+        res.redirect("/registro");
+    }
+});
+
+app.get("/logout",(req,res)=>{
+    const result = (req.session.user === undefined)  ? res.render("logout",{users : ""}) : res.render("logout",{users : req.session.user.name, })
     req.session.destroy();
-    res.send("Sesion finalizada")
-})
+}); 
+
+
+
+
+
 
 app.get('/productos',async(req,res)=>{
     res.render('products',{products: await productosApi.getAll()})
